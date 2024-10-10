@@ -1,0 +1,11 @@
+{
+  "name": "roadmapprojects",
+  "version": "1.0.0",
+  "description": "A CLI project that tracks tasks.",
+  "main": "index.js",
+  "scripts": {
+
+  },
+  "author": "Jaspreet Singh",
+  "license": "MIT"
+}
