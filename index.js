@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { get } = require('http');
 const path = require('path');
 
 const filePath = path.join(__dirname, 'tasks.json');
@@ -25,10 +26,15 @@ function userInterface() {
         case 'list:inprogress':
             listInProgressTasks();
             break;
-        case 'update':
+        case 'update:status':
             id = parseInt(process.argv[3]);
             const newStatus = process.argv[4];
-            updateTask(id, newStatus);
+            updateStatus(id, newStatus);
+            break;
+        case 'update:description':
+            id = parseInt(process.argv[3]);
+            const newDescription = process.argv[4];
+            updateDescription(id, newDescription);
             break;
         case 'delete':
             id = parseInt(process.argv[3]);
@@ -45,14 +51,16 @@ function displayMenu() {
     // console.log('Task Tracker CLI');
     console.log('Please Choose a Command:');
     console.log('####################################################################################');
-    console.log('#   add                - Add a new task. (Ex: node index.js add "Learn Node.js")   ');
-    console.log('#   list               - List all tasks                                            ');
-    console.log('#   list:todo          - List incomplete tasks                                     ');
-    console.log('#   list:completed     - List completed tasks                                      ');
-    console.log('#   list:inprogress    - List in progress tasks                                    ');
-    console.log("#   update             - Update a task's status to 'completed' or 'inprogress' or"
-        + " 'todo'. (Ex: node index.js update 1 completed.) ");
-    console.log('#   delete             - Deletes a task. (Ex: node index.js delete 1)              ');
+    console.log('#   add                      - Add a new task. (Ex: node index.js add "Learn Node.js")   ');
+    console.log('#   list                     - List all tasks                                            ');
+    console.log('#   list:todo                - List incomplete tasks                                     ');
+    console.log('#   list:completed           - List completed tasks                                      ');
+    console.log('#   list:inprogress          - List in progress tasks                                    ');
+    console.log("#   update:status             - Update a task's status to 'completed' or 'inprogress' or"
+        + " 'todo'. (Ex: node index.js update:status 1 'completed') ");
+    console.log('#   update:description        - Update a task\'s description.'
+        + ' (Ex: node index.js update:description 1 "Learn to cook") ');
+    console.log('#   delete                   - Deletes a task. (Ex: node index.js delete 1)              ');
     console.log('####################################################################################');
     console.log('');
 }
@@ -70,9 +78,9 @@ function addTask(description) {
 
     tasks.push(newTask);
     saveTasks(tasks);
-    console.log(`Added task: ${description}`);
-    console.log('Task list has been updated.');
     listAllTasks();
+    console.log(`Added task: ${description}`);
+    console.log('Here\'s the updated task list.');
 }
 
 function saveTasks(tasks) {
@@ -89,7 +97,7 @@ function getTasks() {
     }
 }
 
-function updateTask(id, newStatus) {
+function updateStatus(id, newStatus) {
     const tasks = getTasks();
     const taskIndex = tasks.findIndex(task => task.id === id);
     if (taskIndex === -1) {
@@ -101,9 +109,24 @@ function updateTask(id, newStatus) {
         tasks[taskIndex].status = newStatus;
         tasks[taskIndex].updatedAt = new Date().toISOString();
         saveTasks(tasks);
-        console.log(`Task with id ${id} has been updated.`);
-        console.log('Task list has been updated.');
         listAllTasks();
+        console.log(`Task with id ${id} has been updated.`);
+        console.log('Here\'s the updated task list.');
+    }
+}
+
+function updateDescription(id, newDescription) {
+    const tasks = getTasks();
+    const taskIndex = tasks.findIndex(task => task.id === id);
+    if (taskIndex === -1) {
+        console.log(`Task with id ${id} not found.`);
+    } else {
+        tasks[taskIndex].description = newDescription;
+        tasks[taskIndex].updatedAt = new Date().toISOString();
+        saveTasks(tasks);
+        listAllTasks();
+        console.log(`Task with id ${id} has been updated.`);
+        console.log('Here\'s the updated task list.');
     }
 }
 
@@ -114,15 +137,15 @@ function deleteTask(id) {
     } else {
         const tasks = getTasks().filter(task => task.id !== id);
         saveTasks(tasks);
-        console.log(`Task with id ${id} has been deleted.`);
-        console.log('Task list has been updated.');
         listAllTasks();
+        console.log(`Task with id ${id} has been updated.`);
+        console.log('Here\'s the updated task list.');
     }
 }
 
 
-function listAllTasks() { // include each task's id, description, and status
-    const tasks = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+function listAllTasks() {
+    const tasks = getTasks();
 
     try {
         tasks.forEach(task => {
@@ -142,30 +165,29 @@ function listAllTasks() { // include each task's id, description, and status
 }
 
 function listCompletedTasks() {
-    const completedTasks = getTasks().find(task => task.status === 'completed');
-    if (!completedTasks) {
+    const allCompletedTasks = getTasks().filter(task => task.status === 'completed');
+    if (allCompletedTasks.length === 0) {
         console.log('No completed tasks found.');
     } else {
-        console.log(completedTasks);
+        console.log(allCompletedTasks);
     }
-
 }
 
 function listInProgressTasks() {
-    const inProgress = getTasks().find(task => task.status === 'inprogress');
-    if (!inProgress) {
-        console.log('No in-progress tasks found.');
+    const allInProgressTasks = getTasks().filter(task => task.status === 'inprogress');
+    if (allInProgressTasks.length === 0) {
+        console.log('No completed tasks found.');
     } else {
-        console.log(inProgress);
+        console.log(allInProgressTasks);
     }
 }
 
 function listTodoTasks() {
-    const todo = getTasks().find(task => task.status === 'todo');
-    if (!todo) {
-        console.log('No tasks with todo status found.');
+    const allTodos = getTasks().filter(task => task.status === 'todo');
+    if (allTodos.length === 0) {
+        console.log('No completed tasks found.');
     } else {
-        console.log(todo);
+        console.log(allTodos);
     }
 }
 
