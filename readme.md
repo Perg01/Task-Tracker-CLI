@@ -29,32 +29,32 @@ No dependencies are required. You can directly run the CLI by invoking node.</p>
 
 <h2>Available Commands</h2>
 
-<p>Add a new task:
+<p>Add a new task:<br>
 node index.js add "Task description"
 
-List all tasks:
+List all tasks: <br>
 node index.js list
 
-List only tasks with status todo:
+List only tasks with status todo: <br>
 node index.js list:todo
 
-List only tasks with status inprogress:
+List only tasks with status inprogress: <br>
 node index.js list:inprogress
 
-List only tasks with status completed:
+List only tasks with status completed: <br>
 node index.js list:completed
 
-Update a task's status:
-node index.js update:status <task-id> <new-status>
-Example:
+Update a task's status: <br>
+node index.js update:status <task-id> <new-status> <br>
+Example: <br>
 node index.js update:status 1 completed
 
-Update a task's description:
-node index.js update:description <task-id> "New description"
-Example:
+Update a task's description: <br>
+node index.js update:description <task-id> "New description" <br>
+Example: <br>
 node index.js update:description 1 "Learn JavaScript basics"
 
-Delete a task:
-node index.js delete <task-id>
-Example:
+Delete a task: <br>
+node index.js delete <task-id> <br>
+Example: <br>
 node index.js delete 1</p>
