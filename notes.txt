@@ -1,0 +1,5 @@
+TODOs:
+    -   Fix the displayCommands
+
+
+    -   fix data formatting in json file. 
