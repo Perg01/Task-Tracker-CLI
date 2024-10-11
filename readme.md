@@ -17,12 +17,13 @@ Error Handling: Handles invalid inputs, non-existent task IDs, and unsupported s
 
 <h2>Installation</h2>
 
-<p>Clone the repository:
-git clone https://github.com/your-username/task-tracker-cli.git
-cd task-tracker-cli
-npm install
-Run the app:
-No dependencies are required. You can directly run the CLI by invoking node.</p>
+<p>Clone the repository: <br>
+git clone https://github.com/your-username/task-tracker-cli.git <br>
+cd task-tracker-cli <br>
+npm install <br>
+
+<h2>Run the app: </h2>
+<p>No dependencies are required. You can directly run the CLI by invoking node.</p>
 
 <h2>Usage</h2>
 <p>You can use the following commands to interact with the Task Tracker app.</p>
